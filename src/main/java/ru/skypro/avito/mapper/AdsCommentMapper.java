@@ -10,10 +10,10 @@ import ru.skypro.avito.model.Comment;
 
 
 @Mapper(componentModel = "spring")
-public interface AdsCommentMapperImplCustom {
+public interface AdsCommentMapper {
 
     String USER_AVATAR = "/users/avatar/";
-    AdsCommentMapperImplCustom INSTANCE = Mappers.getMapper(AdsCommentMapperImplCustom.class);
+    AdsCommentMapper INSTANCE = Mappers.getMapper(AdsCommentMapper.class);
 
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "id", source = "pk")

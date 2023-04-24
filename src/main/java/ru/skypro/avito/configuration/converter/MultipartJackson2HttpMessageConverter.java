@@ -5,6 +5,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 
+/**
+ * MultipartJackson2HttpMessageConverter - это конвертер сообщений для преобразования многопартовых запросов с файлами в формате JSON в объекты Java и наоборот,
+ * используя библиотеку Jackson. Он устанавливает MediaType в APPLICATION_OCTET_STREAM и не поддерживает запись данных в JSON.
+ */
+
 @Component
 public class MultipartJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter {
 

@@ -11,6 +11,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * WebSecurityConfig - это конфигурационный класс для настройки безопасности веб-приложения на основе Spring Security.
+ * Он определяет список путей, доступ к которым разрешен без аутентификации, настраивает правила авторизации для остальных путей,
+ * включает CORS и HTTP Basic Authentication, а также определяет шифрование паролей.
+ */
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
