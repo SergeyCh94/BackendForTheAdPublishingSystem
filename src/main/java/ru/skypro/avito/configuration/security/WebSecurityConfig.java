@@ -31,7 +31,8 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
             "/ads",
             "/ads/*",
             "/ads/image/**",
-            "/ads/*/comments"
+            "/ads/*/comments",
+            "/avatars/**" // Добавляем путь к аватаркам пользователей
     };
 
 

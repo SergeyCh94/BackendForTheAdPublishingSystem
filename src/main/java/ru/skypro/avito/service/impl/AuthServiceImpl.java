@@ -2,11 +2,13 @@ package ru.skypro.avito.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.avito.dto.RegisterReq;
+import ru.skypro.avito.exception.BadCredentialsException;
 import ru.skypro.avito.exception.IncorrectArgumentException;
 import ru.skypro.avito.service.AuthService;
 import ru.skypro.avito.service.CustomUserDetailsService;
@@ -37,9 +39,24 @@ public class AuthServiceImpl implements AuthService {
         // используя метод loadUserByUsername(userName). Это позволяет получить информацию о пользователе, включая его хэшированный пароль.
         UserDetails userDetails = manager.loadUserByUsername(userName);
 
+        // Если userDetails равен null, то выбрасывается исключение AuthenticationException,
+        // чтобы указать, что процесс входа завершился неудачно.
+        if (userDetails == null) {
+            throw new BadCredentialsException("User not found");
+        }
+
         // Используется объект encoder - это объект PasswordEncoder, для сравнения хэша пароля, переданного в метод, с хэшем пароля,
         // полученным из деталей пользователя (userDetails.getPassword()). Если хэши совпадают, то метод возвращает true, иначе - false.
-        return encoder.matches(password, userDetails.getPassword());
+        boolean passwordMatch = encoder.matches(password, userDetails.getPassword());
+
+        // Если пароль не совпадает, то выбрасывается исключение AuthenticationException,
+        // чтобы указать, что процесс входа завершился неудачно.
+        if (!passwordMatch) {
+            throw new BadCredentialsException("Invalid password");
+        }
+
+        // Возвращается результат сравнения хэшей паролей (true, если совпадают, иначе - false).
+        return passwordMatch;
     }
 
     /**

@@ -66,28 +66,28 @@ public class CommentServiceImpl implements CommentService {
         // Выводится отладочное сообщение в лог о добавлении комментария для объявления с указанным идентификатором.
         log.debug("Adding comment for ads with id: {}", id);
 
-
         // Проверяется, что текст комментария не является null или пустым, иначе выбрасывается исключение IncorrectArgumentException.
         if(adsCommentDto.getText() == null || adsCommentDto.getText().isBlank()) throw new IncorrectArgumentException();
 
         // Создается объект Comment на основе DTO комментария с использованием маппера AdsCommentMapper.INSTANCE.toEntity(adsCommentDto).
         Comment comment = AdsCommentMapper.INSTANCE.toEntity(adsCommentDto);
 
-        // Получается текущий пользователь (автор комментария) на основе аутентификационных данных authentication
-        // с использованием сервиса userService.getUserByUsername(authentication.getName()).
-        User user = userService.getUserByUsername(authentication.getName());
+        // Получается текущий пользователь (автор комментария) из объекта Authentication, не извлекая его из БД,
+        // с использованием метода getPrincipal() и приведения к объекту User.
+        User user = (User) authentication.getPrincipal();
 
         // Устанавливается автор комментария в объект Comment с использованием метода setAuthor(user).
         // Устанавливается объявление, к которому добавляется комментарий, на основе его идентификатора с использованием сервиса adsService.findAdsById(id)
         // и метода setAds(ads).
         // Устанавливается текущее время в качестве времени создания комментария с использованием метода setCreatedAt(Instant.now()).
-        // Комментарий сохраняется в базе данных с использованием репозитория commentRepository и метода save(comment).
         comment.setAuthor(user);
         comment.setAds(adsService.findAdsById(id));
         comment.setCreatedAt(Instant.now());
 
-        // Созданный комментарий преобразуется обратно в DTO с использованием маппера AdsCommentMapper.INSTANCE.toDto(comment).
+        // Комментарий сохраняется в базе данных с использованием репозитория commentRepository и метода save(comment).
         commentRepository.save(comment);
+
+        // Созданный комментарий преобразуется обратно в DTO с использованием маппера AdsCommentMapper.INSTANCE.toDto(comment).
 
         // Возвращается объект AdsCommentDto, содержащий добавленный комментарий.
         return AdsCommentMapper.INSTANCE.toDto(comment);
