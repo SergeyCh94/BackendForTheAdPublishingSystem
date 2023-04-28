@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/scripts/avatar-table.sql
+
+  - include:
+      file: liquibase/scripts/image-table.sql
+
+  - include:
+      file: liquibase/scripts/users-table.sql
+
+  - include:
+      file: liquibase/scripts/ads-table.sql
+
+  - include:
+      file: liquibase/scripts/comment-table.sql

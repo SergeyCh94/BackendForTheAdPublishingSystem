@@ -1,0 +1,25 @@
+package ru.skypro.avito.configuration.converter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
+import org.springframework.stereotype.Component;
+
+/**
+ * MultipartJackson2HttpMessageConverter - это конвертер сообщений для преобразования многопартовых запросов с файлами в формате JSON в объекты Java и наоборот,
+ * используя библиотеку Jackson. Он устанавливает MediaType в APPLICATION_OCTET_STREAM и не поддерживает запись данных в JSON.
+ */
+
+@Component
+public class MultipartJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter {
+
+    protected MultipartJackson2HttpMessageConverter(ObjectMapper objectMapper) {
+        super(objectMapper, MediaType.APPLICATION_OCTET_STREAM);
+    }
+
+    @Override
+    protected boolean canWrite(MediaType mediaType) {
+        return false;
+    }
+
+}
